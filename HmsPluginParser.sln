@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HmsPluginParser", "HmsPluginParser\HmsPluginParser.csproj", "{CDBE6BE9-4896-47C4-A4C1-2A7EF5FAAFAD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CDBE6BE9-4896-47C4-A4C1-2A7EF5FAAFAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDBE6BE9-4896-47C4-A4C1-2A7EF5FAAFAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDBE6BE9-4896-47C4-A4C1-2A7EF5FAAFAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDBE6BE9-4896-47C4-A4C1-2A7EF5FAAFAD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B46CAEE2-8E84-40D6-82FB-E56C717D5428}
+	EndGlobalSection
+EndGlobal

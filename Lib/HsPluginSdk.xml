@@ -1,0 +1,976 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HsPluginSdk</name>
+    </assembly>
+    <members>
+        <member name="T:HurricaneServer.Plugins.Bounce.BounceCategory">
+            <summary>
+            Specifies the type of bounce that was detected.
+            </summary>
+            <remarks>Bounced email also known as Delivery Status Notifications (DSN's) are categorized by their <see cref="T:HurricaneServer.Plugins.Bounce.BounceType"/>.  
+            Each <see cref="T:HurricaneServer.Plugins.Bounce.BounceType"/> contains several categories.  The <see cref="T:HurricaneServer.Plugins.Bounce.BounceCategory"/> enumeration contains these categories.  This value is exposed by the 
+            BounceCategory property of the <see cref="T:HurricaneServer.Plugins.Bounce.IBounceMessageEnvelope"/> class.</remarks>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Bounce.BounceCategory.Hard">
+            <summary>
+            The server was unable to deliver the message due to a permanent error.  A permanent failure is one which is not likely to be resolved by
+            resending the message in the current form.  Some change to the message or the destination must be made for successful delivery.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Bounce.BounceCategory.Soft">
+            <summary>
+            The server was unable to deliver the message but it is a temporary error. This type of failure is one in which the message as
+            sent is valid, but some temporary event prevents the successful	sending of the message.  Sending in the future may be successful
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Bounce.BounceCategory.Spam">
+            <summary>
+            Your message has been identified as spam and was blocked.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Bounce.BounceCategory.Virus">
+            <summary>
+            Your message contained a virus and was blocked.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Bounce.BounceCategory.Modified">
+            <summary>
+            Your message was modified prior to delivery.  (i.e. illegal attachment removed)
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Bounce.BounceCategory.BlockedOther">
+            <summary>
+            Your message was blocked for an unknown or general reason.  (i.e. A word in the message triggered content filtering to fail the message.)
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Bounce.BounceCategory.Challenge">
+            <summary>
+            The message is a challenge response message which requires further action for the original message to be delivered.  For example, "Click this link to verify the message is coming from a human."
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Bounce.BounceCategory.Transient">
+            <summary>
+            The message has been delayed because there is a problem.  This does not mean the message will fail it's only a warning.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Bounce.BounceCategory.AutoReply">
+            <summary>
+            The message is an auto-reply.  For example out of office, or message received confirmation.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Bounce.BounceCategory.Subscribe">
+            <summary>
+            The message is a subscribe request. The <see cref="P:HurricaneServer.Plugins.Bounce.IBounceMessageEnvelope.BounceAddress"/> will be set to the from address.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Bounce.BounceCategory.Unsubscribe">
+            <summary>
+            The message is an unsubscribe request. The <see cref="P:HurricaneServer.Plugins.Bounce.IBounceMessageEnvelope.BounceAddress"/> will be set to the from adddress.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Bounce.BounceCategory.AddressChange">
+            <summary>
+            The message is an address change notification.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Bounce.BounceCategory.Delivered">
+            <summary>
+            A confirmation stating the message was delivered.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Bounce.BounceCategory.Custom">
+            <summary>
+             The message was detected by a custom signature.
+             </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Bounce.BounceCategory.Unknown">
+            <summary>
+            The type could not be determined.
+            </summary>
+        </member>
+        <member name="T:HurricaneServer.Plugins.Bounce.BounceType">
+            <summary>
+            Specifies the type of bounce that was detected.
+            </summary>
+            <remarks>This enumeration specifies the general type of failure that occured.  To get more details
+            see the <see cref="T:HurricaneServer.Plugins.Bounce.BounceCategory"/> enumeration.  This value is exposed by the 
+            BounceType property of the <see cref="T:HurricaneServer.Plugins.Bounce.IBounceMessageEnvelope"/> class.</remarks>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Bounce.BounceType.Undeliverable">
+            <summary>
+            The message was undeliverable.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Bounce.BounceType.Blocked">
+            <summary>
+            The message was blocked.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Bounce.BounceType.Informational">
+            <summary>
+            The bounce is informational only.  The means the message may have been delivered.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Bounce.BounceType.Custom">
+            <summary>
+            The bounce was detected using a custom signature.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Bounce.BounceType.Unknown">
+            <summary>
+            The bounce type is unknown.
+            </summary>
+        </member>
+        <member name="T:HurricaneServer.Plugins.Bounce.IBounceMessageEnvelope">
+            <summary>
+            This interface contains read-only values that pertain to the bounce.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Bounce.IBounceMessageEnvelope.AccountId">
+            <summary>
+            The account id the original message was sent from.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Bounce.IBounceMessageEnvelope.SystemMessageId">
+            <summary>
+            The original system message id used to send this message if available.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Bounce.IBounceMessageEnvelope.CustomMessageId">
+            <summary>
+            The original message id used to send this message.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Bounce.IBounceMessageEnvelope.MailingId">
+            <summary>
+            The original mailing id used tosend this message.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Bounce.IBounceMessageEnvelope.Message">
+            <summary>
+            Gets a <see cref="T:System.IO.Stream"/> object that contains the entire message.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Bounce.IBounceMessageEnvelope.To">
+            <summary>
+            The email address the bounce was addressed to.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Bounce.IBounceMessageEnvelope.From">
+            <summary>
+            The email address the bounce is from.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Bounce.IBounceMessageEnvelope.BounceAddress">
+            <summary>
+            The orignal recipients email address if found.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Bounce.IBounceMessageEnvelope.BounceCategory">
+            <summary>
+            A <see cref="P:HurricaneServer.Plugins.Bounce.IBounceMessageEnvelope.BounceCategory"/> enumeration value that specifies the category of the bounce that was detected.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Bounce.IBounceMessageEnvelope.BounceType">
+            <summary>
+            A <see cref="P:HurricaneServer.Plugins.Bounce.IBounceMessageEnvelope.BounceType"/> enumeration value that specifies the type of bounce that was detected.
+            </summary>
+        </member>
+        <member name="T:HurricaneServer.Plugins.Bounce.IBounceProcess">
+            <summary>
+            The IBounceProcess is called to provide information for bounced messages.
+            </summary>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Bounce.IBounceProcess.OnBounce(HurricaneServer.Plugins.Bounce.IBounceMessageEnvelope,System.Collections.Generic.Dictionary{System.String,System.Object}@)">
+            <summary>
+            Called once every time a bounce is processed
+            </summary>
+            <param name="message">An <see cref="T:HurricaneServer.Plugins.Bounce.IBounceMessageEnvelope"/> object that contains information about the bounce.</param>
+            <param name="options">Additional Options that may be read or set. Current values<br/>
+            (String) BounceStatus - The Status field value taken from the NDR Mime Part.<br/>
+            (String) DiagnosticCode - The Diagnostic code value taken from the NDR Mime Part.<br/>
+            (String) SignatureMatchId - This id represents the Signature id that matched the message as a bounce. This value can be sent to Socketlabs to help debug signature issues.</param>
+            (int) FailureCode - The code that explains the type of bounce that was processed.  
+            (bool) Suppressed - Set to true if the recipients address was added to the suppression list. False if not.
+            (string) Reason - If available the text reson for the bounce that was included in the message. 
+        </member>
+        <member name="T:HurricaneServer.Plugins.Dynamic.DynamicEventId">
+            <summary>
+            Specifies the type of event that was fired by the <see cref="T:HurricaneServer.Plugins.Dynamic.IDynamic"/> interface.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Dynamic.DynamicEventId.Init">
+            <summary>
+            Called once at startup requesting which methods should be called.<br/>
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Dynamic.DynamicEventId.OnFirstConnection">
+            <summary>
+            Called when the first connect to a domain is being made.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Dynamic.DynamicEventId.OnSubSequentConnection">
+            <summary>
+            Called when a subsequent connection is being made to a domain.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Dynamic.DynamicEventId.OnFail">
+            <summary>
+            Called when a message fails delivery.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Dynamic.DynamicEventId.OnDefer">
+            <summary>
+            Called when a message defers.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Dynamic.DynamicEventId.OnDeliveryRuleLoaded">
+            <summary>
+            Called when the system is loading a domain's delivery rule.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Dynamic.DynamicEventId.OnFeedbackLoopParsed">
+            <summary>
+            Called when a feedback loop has been parsed.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Dynamic.DynamicEventId.OnReserved">
+            <summary>
+            Reserved for internal use.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Dynamic.DynamicEventId.OnPostFail">
+            <summary>
+            Called for post event failures
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Dynamic.DynamicEventId.OnPostDefer">
+            <summary>
+            Called for post event Deferrals.
+            </summary>
+        </member>
+        <member name="T:HurricaneServer.Plugins.Dynamic.IDynamic">
+            <summary>
+            Defines a generalized interface that a class can inherit to handle MTA events.
+            </summary>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Dynamic.IDynamic.OnDynamicEvent(HurricaneServer.Plugins.Dynamic.DynamicEventId,System.Collections.Generic.Dictionary{System.String,System.Object}@)">
+            <summary>
+            A generic method that is used to handle various MTA events.   
+            </summary>
+            <param name="eventId">Id of the event that was fired.  One of the <see cref="T:HurricaneServer.Plugins.Dynamic.DynamicEventId"/> values.<br/></param>
+            <param name="eventParams">This value depends on the eventId value.  The possible values are listed below.<br/>
+            <br/>
+            DynamicEventId.Init<br/>
+            Called once to determine which events should be fired.  The eventParams argument will contain an entry for each available event.
+            The events that you wish to capture should be set to a non null value.<br/>
+            Return value is not used and should be null.<br/>
+            <br/>
+            if (eventId == DynamicEventId.Init)<br/>
+            {<br/>
+                 eventParams[DynamicEventId.OnFeedbackLoopParsed.ToString()] = 1;<br/>
+                 eventParams[DynamicEventId.OnFirstConnection.ToString()] = 1;<br/>
+                 return null;<br/>
+            }<br/>
+            <br/>
+            
+            DynamicEventId.OnFirstConnection<br/>
+            Called when a connection is being made to a domain.  Event params contains the below values.<br/>
+            (out string) AccountId - The id of the account making the connection.<br/>
+            (out string) Domain - The domain the connection is being made to.<br/>
+            (out string) LocalIp - The local ip address that is connecting out.<br/>
+            (in/out StringDictionary) DeliveryRule - The delivery rule settings being used.<br/>
+            Return value type is Integer.<br/>
+            0/null - Continue with connection.<br/>
+            1 - Defer domain.<br/>
+            2 - Fail all messages.<br/>
+            <br/>
+            DynamicEventId.OnSubsequentConnection<br/>
+            Called for each subsequent connection made to a domain.  Event params contains the below values.<br/>
+            (out string) AccountId - The id of the account making the connection.<br/>
+            (out string) Domain - The domain the connection is being made to.<br/>
+            (out string) Connections - Current number of outbound connections.<br/>
+            Return value type is bool.<br/>
+            true - Continue connection.<br/>
+            false - Cancel connection.<br/>
+            <br/>
+            DynamicEventId.OnFail<br/>
+            Called when a message fails.<br/>
+            (out string) AccountId - The id of the account making the connection.<br/>
+            (out string) Domain - The domain the connection is being made to. <br/>
+            (out string) Response - The server response that caused the failure.<br/>
+            (out string) OnFailureReasons - One of the HurricaneServer.Plugins.Outbound.OnFailureReason values.<br/>
+            Return value is not used and should be null.<br/>
+            <br/>
+            DynamicEventId.OnDefer<br/>
+            Called when a message is deferred.<br/>
+            (out string) AccountId - The id of the account making the connection.<br/>
+            (out string) Domain - The domain the connection is being made to. <br/>
+            (out string) Response - The server response that caused the defer.<br/>
+            (out string) OnFailureReasons - One of the HurricaneServer.Plugins.Outbound.OnFailureReason values.<br/>
+            Return value is not used and should be null.<br/>
+            <br/>
+            DynamicEventId.OnDeliveryRuleLoaded<br/>
+            Called when a domain loads a delivery rule.<br/>
+            (out string) AccountId - The id of the account making the connection.<br/>
+            (out string) Domain - The domain the connection is being made to. <br/>
+            (out string) LoadPoint - The point at which the rule is loaded. The delivery rules are loaded currently at two points.  One when the Domain is first being sent to (DomainStart) and once after the MX record is found (MXStart).<br/>
+            (in/out StringDictionary) DeliveryRule - The delivery rule values that can be changed.  Changes are only valid for this connection.<br/>
+            Return value is not used and should be null.<br/>
+            <br/>
+            DynamicEventId.OnFeedbackLoopParsed<br/>
+            Called when a feedback loop is parsed.  See (http://tools.ietf.org/html/draft-shafranovich-feedback-report-07)<br/>
+            (out string) Type - The type value taken from the FBL mime part.<br/>
+            (out string) Account - The account the report is being parsed for.<br/>
+            (out string) User-Agent - The user agent taken from the FBL mime part.<br/>
+            (out string) CustomMailingID - The original custom mailing if available.<br/>
+            (out string) CustomMessageID - The original custom message id if available.<br/>
+            (out string) SystemMessageID - The original system message id if available.<br/>
+            (out string) OriginalRecipient - The original recipient the email was going to.<br/>
+            (out string) From - The Address the feedback loop message came from.<br/>
+            (out string) To - The Address the feedback loop message was addressed to.<br/>
+            (out string) Length - The size of the message.<br/>
+            (out MemoryStream) Message - This is the full message as a MemoryStream object.
+            Return value is not used and should be null.<br/>
+            </param>
+            <br/>
+            DynamicEventId.OnPostFail<br/>
+            Called when an http message is deferred.<br/>
+            (out string) AccountId - The id of the account making the connection.<br/>
+            (out string) Domain - The domain the connection is being made to. <br/>
+            (out string) Response - The server response that caused the defer.<br/>
+            (out string) OnFailureReasons - One of the HurricaneServer.Plugins.Outbound.OnFailureReason values.<br/>
+            Return value is not used and should be null.<br/>
+            <br/>
+            <br/>
+            DynamicEventId.OnPostDefer<br/>
+            Called when an http message is deferred.<br/>
+            (out string) AccountId - The id of the account making the connection.<br/>
+            (out string) Domain - The domain the connection is being made to. <br/>
+            (out string) Response - The server response that caused the defer.<br/>
+            (out string) OnFailureReasons - One of the HurricaneServer.Plugins.Outbound.OnFailureReason values.<br/>
+            Return value is not used and should be null.<br/>
+            <br/>
+            <remarks>
+            The OnDynamicEvent method is used to handle multiple events.  The format of this event makes it easy to 
+            add new calls and arguments without changing the plugin interface.  
+            </remarks>
+            
+            <returns>This value depends on the id value.  The default return value should be null.
+            </returns> 
+        </member>
+        <member name="T:HurricaneServer.Plugins.Inbound.InboundResponseAction">
+            <summary>
+            An enumeration value that requests a certain action be taken.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Inbound.InboundResponseAction.Success">
+            <summary>
+            Succes or continue processing.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Inbound.InboundResponseAction.Failure">
+            <summary>
+            The command resulted in a failure and the data should not be processed.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Inbound.InboundResponseAction.Disconnect">
+            <summary>
+            After the response is sent to the client the connection should be closed.
+            </summary>
+        </member>
+        <member name="T:HurricaneServer.Plugins.Inbound.MessageResponseAction">
+            <summary>
+            An enumeration value that specifies what action should be taken in response to a message being received.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Inbound.MessageResponseAction.Accept">
+            <summary>
+            Accept the message and continue.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Inbound.MessageResponseAction.Reject">
+            <summary>
+            Reject the message. Returns an error to the client.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Inbound.MessageResponseAction.Ignore">
+            <summary>
+            Ignores the message.  The client does not know the message was rejected.
+            </summary>
+        </member>
+        <member name="T:HurricaneServer.Plugins.Inbound.AuthResult">
+            <summary>
+            An enumeration that describes what occured durring the authentication process.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Inbound.AuthResult.Success">
+            <summary>
+            User was authenticated
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Inbound.AuthResult.ProtocolError">
+            <summary>
+            A protocol error occured durring authentication.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Inbound.AuthResult.BadAccountOrPassword">
+            <summary>
+            The client supplied a bad user name or password.
+            </summary>
+        </member>
+        <member name="T:HurricaneServer.Plugins.Inbound.IInboundMessageEnvelope">
+            <summary>
+            This interface contains informaiton about the message that is being recevied.
+            </summary>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Inbound.IInboundMessageEnvelope.GetMessage">
+            <summary>
+            Gets the body of the message in stream format.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Inbound.IInboundMessageEnvelope.GetMessage(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Gets the body of the message in stream format.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Inbound.IInboundMessageEnvelope.SetMessage(System.IO.Stream,System.Int32)">
+            <summary>
+            Sets the body of the message to a new value.
+            </summary>
+            <param name="message">A stream containing the new body.</param>
+            <param name="Length">The length of the new message contained in the stream.</param>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Inbound.IInboundMessageEnvelope.SetMessage(System.IO.Stream,System.Int32,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Sets the body of the message to a new value.
+            </summary>
+            <param name="message">A stream containing the new body.</param>
+            <param name="Length">The length of the new message contained in the stream.</param>
+            <param name="options">Additional Option flags that may be set.</param>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Inbound.IInboundMessageEnvelope.SystemMessageId">
+            <summary>
+            Gets the message id created by the system.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Inbound.IInboundMessageEnvelope.CustomMessageId">
+            <summary>
+            Gets the client generated messaged id.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Inbound.IInboundMessageEnvelope.MailingId">
+            <summary>
+            Gets the client generated mailing id.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Inbound.IInboundMessageEnvelope.MailFrom">
+            <summary>
+            Gets or set the address used as the "MAIL FROM"
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Inbound.IInboundMessageEnvelope.Recipients">
+            <summary>
+            Gets or sets the recipient address(s).  If the message has multiple recipients they will be comma delimited.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Inbound.IInboundMessageEnvelope.MessageSize">
+            <summary>
+            Gets the original size of the message.
+            </summary>
+        </member>
+        <member name="T:HurricaneServer.Plugins.Inbound.IInboundSMTPConnection">
+            <summary>
+            The interfaced called durring an inbound smtp connection.
+            </summary>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Inbound.IInboundSMTPConnection.OnConnect(System.Int32,System.String,System.Collections.Generic.Dictionary{System.String,System.Object}@,System.String@)">
+            <summary>
+            Called when a connection is made.
+            </summary>
+            <param name="sessionId">A session id specific to this connection.</param>
+            <param name="ip">The ip address of the remote client.</param>
+            <param name="response">When set this optional string respnse will be returned to the client.</param>
+            <param name="options">Additonal options that may be read or set.  Currently Values<br/>
+            (sting) LocalIp - Contains the local ip the remote client connected to.</param>
+            <returns>A <see cref="T:HurricaneServer.Plugins.Inbound.InboundResponseAction"/> value.</returns>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Inbound.IInboundSMTPConnection.OnConnectionClosed(System.Int32,System.Collections.Generic.Dictionary{System.String,System.Object}@)">
+            <summary>
+            Called when the connection is closed.
+            </summary>
+            <param name="sessionId">A session id specific to this connection.</param>
+            <param name="options">Additional Options that may be read or set.</param>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Inbound.IInboundSMTPConnection.OnData(System.Int32,System.Collections.Generic.Dictionary{System.String,System.Object}@,System.String@)">
+            <summary>
+            Called when the DATA comamnd is sent from the client.
+            </summary>
+            <param name="sessionId">A session id specific to this connection.</param>
+            <param name="options">Additional Options that may be read or set.</param>
+            <param name="response">When set this optional string respnse will be returned to the client.</param>
+            <returns>A <see cref="T:HurricaneServer.Plugins.Inbound.InboundResponseAction"/> value.</returns>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Inbound.IInboundSMTPConnection.OnFrom(System.Int32,System.String,System.Collections.Generic.Dictionary{System.String,System.Object}@,System.String@)">
+            <summary>
+            Called when the MAIL FROM command is sent from the client.
+            </summary>
+            <param name="sessionId">A session id specific to this connection.</param>
+            <param name="from">The from address passed to this command.</param>
+            <param name="options">Additional Options that may be read or set.</param>
+            <param name="response">When set this optional string respnse will be returned to the client.</param>
+            <returns>A <see cref="T:HurricaneServer.Plugins.Inbound.InboundResponseAction"/> value.</returns>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Inbound.IInboundSMTPConnection.OnRcptTo(System.Int32,System.String,System.Collections.Generic.Dictionary{System.String,System.Object}@,System.String@)">
+            <summary>
+            Called when the RCPT TO command is sent from the client.
+            </summary>
+            <param name="sessionId">A session id specific to this connection.</param>
+            <param name="recipient">The recipient passed to this command.</param>
+            <param name="options">Additional Options that may be read or set.</param>
+            <param name="response">When set this optional string respnse will be returned to the client.</param>
+            <returns>A <see cref="T:HurricaneServer.Plugins.Inbound.InboundResponseAction"/> value.</returns>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Inbound.IInboundSMTPConnection.OnAuth(System.Int32,HurricaneServer.Plugins.Inbound.AuthResult,System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Object}@,System.String@)">
+            <summary>
+            Called and an authentication attempt is made.
+            </summary>
+            <param name="sessionId">A session id specific to this connection.</param>
+            <param name="result">A <see cref="T:HurricaneServer.Plugins.Inbound.AuthResult"/> value that explains the result of the authentication.</param>
+            <param name="account">The account used to authenticate with.</param>
+            <param name="password">The password used to authenticate if available.</param>
+            <param name="options">Additional Options that may be read or set.</param>
+            <param name="response">When set this optional string respnse will be returned to the client.</param>
+            <returns>A <see cref="T:HurricaneServer.Plugins.Inbound.InboundResponseAction"/> value.</returns>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Inbound.IInboundSMTPConnection.OnRset(System.Int32,System.Collections.Generic.Dictionary{System.String,System.Object}@,System.String@)">
+            <summary>
+            Called when the RSET command is sent from the client.
+            </summary>
+            <param name="sessionId">A session id specific to this connection.</param>
+            <param name="options">Additional Options that may be read or set.</param>
+            <param name="response">When set this optional string respnse will be returned to the client.</param>
+            <returns>A <see cref="T:HurricaneServer.Plugins.Inbound.InboundResponseAction"/> value.</returns>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Inbound.IInboundSMTPConnection.OnMessageRecieved(System.Int32,HurricaneServer.Plugins.Inbound.IInboundMessageEnvelope@,System.Collections.Generic.Dictionary{System.String,System.Object}@)">
+            <summary>
+            Called once for every message received by the system.  This can be used to modify the message.
+            </summary>
+            <param name="sessionId">A session id specific to this connection.</param>
+            <param name="envelope">A <see cref="T:HurricaneServer.Plugins.Inbound.IInboundMessageEnvelope"/> object that contains information regarding the message.</param>
+            <param name="options">Additional Options that may be read or set. Current values<br/>
+            (string) AccountId - The account the message is going to be dropped in to.  This value can be changed within the call to change accounts.<br/>
+                                  i.e. Options[AccountId] = "1001" 
+            </param>
+            <returns>A <see cref="T:HurricaneServer.Plugins.Inbound.MessageResponseAction"/> value.</returns>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Inbound.IInboundSMTPConnection.OnMessageComplete(System.Int32,System.Collections.Generic.Dictionary{System.String,System.Object}@,System.String@)">
+            <summary>
+            Called after the message is recieved and queued.
+            </summary>
+            <param name="sessionId">A session id specific to this connection.</param>
+            <param name="options">Additional Options that may be read or set.</param>
+            <param name="response">When set this optional string respnse will be returned to the client.</param>
+            <returns>A <see cref="T:HurricaneServer.Plugins.Inbound.InboundResponseAction"/> value.</returns>
+        </member>
+        <member name="T:HurricaneServer.Plugins.Outbound.DeferAction">
+            <summary>
+            Enumeration that tells if a failure should be deferred or not.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Outbound.DeferAction.Defer">
+            <summary>
+            Defer the message.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Outbound.DeferAction.Fail">
+            <summary>
+            Do not defer and fail the message.
+            </summary>
+        </member>
+        <member name="T:HurricaneServer.Plugins.Outbound.IOutboundMessageEnvelope">
+            <summary>
+            The interface called durring an oubound connection.
+            </summary>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Outbound.IOutboundMessageEnvelope.GetMessage">
+            <summary>
+            Gets the message full message as a stream.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Outbound.IOutboundMessageEnvelope.GetMessage(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Gets the message full message as a stream.
+            </summary>
+            <param name="options">Optional options that may be passed in.</param>
+            <returns></returns>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Outbound.IOutboundMessageEnvelope.AccountId">
+            <summary>
+            The account the message is being sent on.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Outbound.IOutboundMessageEnvelope.Domain">
+            <summary>
+            The recipients domain.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Outbound.IOutboundMessageEnvelope.SystemMessageId">
+            <summary>
+            The system assigned message id.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Outbound.IOutboundMessageEnvelope.CustomMessageId">
+            <summary>
+            The client assigned message id.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Outbound.IOutboundMessageEnvelope.MailingId">
+            <summary>
+            The client assigned mailing id.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Outbound.IOutboundMessageEnvelope.Sender">
+            <summary>
+            The sender of the message specified in the MAIL FROM command.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Outbound.IOutboundMessageEnvelope.Recipient">
+            <summary>
+            The recipients email address specified in the RCPT TO comamnd.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Outbound.IOutboundMessageEnvelope.StatusMessage">
+            <summary>
+            Gets the message returned from the server.
+            </summary>
+        </member>
+        <member name="T:HurricaneServer.Plugins.Outbound.IOutboundSMTPConnection">
+            <summary>
+            Interface called durring an outbound smtp connection.
+            </summary>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Outbound.IOutboundSMTPConnection.OnDefer(HurricaneServer.Plugins.Outbound.IOutboundMessageEnvelope,HurricaneServer.Plugins.Outbound.OnFailureReasons,System.Collections.Generic.Dictionary{System.String,System.Object}@)">
+            <summary>
+            Called when a message should be defered.
+            </summary>
+            <param name="messageEnvelope">A <see cref="T:HurricaneServer.Plugins.Outbound.IOutboundMessageEnvelope"/> instance that contains details of the message.</param>
+            <param name="reason">An <see cref="T:HurricaneServer.Plugins.Outbound.OnFailureReasons"/> enumeration value that describes the reason for the failure.</param>
+            <param name="options">Additional Options that may be read or set.<br/>
+            (string) LocalIp - The local ip that was used to attempt delivery.<br/>
+            (string) RemoteMta - The remote hostname that the delivery was attempted on.</param>
+            <returns>Returns an <see cref="T:HurricaneServer.Plugins.Outbound.DeferAction"/> enumeration value that sepefifies what action should be take.</returns>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Outbound.IOutboundSMTPConnection.OnFail(HurricaneServer.Plugins.Outbound.IOutboundMessageEnvelope,HurricaneServer.Plugins.Outbound.OnFailureReasons,HurricaneServer.Plugins.Outbound.OnFailureType,System.Collections.Generic.Dictionary{System.String,System.Object}@)">
+            <summary>
+            Called and a message is set to fail permanently.
+            </summary>
+            <param name="messageEnvelope">A <see cref="T:HurricaneServer.Plugins.Outbound.IOutboundMessageEnvelope"/> instance that contains details of the message.</param>
+            <param name="reason">An <see cref="T:HurricaneServer.Plugins.Outbound.OnFailureReasons"/> enumeration value that describes the reason for the failure.</param>
+            <param name="type">A <see cref="T:HurricaneServer.Plugins.Outbound.OnFailureType"/> enumeration value that describes the type of failure.</param>
+            <param name="options">Additional Options that may be read or set. Current values:<br/>
+            (string) DiagnosticCode - The diagnostic error code that caused the failure.</param>
+            (int) FailureCode - The message failured determined by the MTA.<br/>
+            (string) FailReason - The failure response returned from the server or generated by the MTA.<br/>
+            (string) DiagnosticCode - The SMTP formal failure message.<br/>
+            (string) LocalIp - The local IP address the delivery was last attempted on.<br/>
+            (string) RemoteMta - The remote server the delivery was attempted on.<br/>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Outbound.IOutboundSMTPConnection.OnSent(HurricaneServer.Plugins.Outbound.IOutboundMessageEnvelope,System.Collections.Generic.Dictionary{System.String,System.Object}@)">
+            <summary>
+            Called when a message is sent succesfully.
+            </summary>
+            <param name="messageEnvelope">A <see cref="T:HurricaneServer.Plugins.Outbound.IOutboundMessageEnvelope"/> instance that contains details of the message.</param>
+            <param name="options">Additional Options that may be read or set.</param>
+            (string) LocalIp - The local IP address the delivery was attempted on.<br/>
+            (string) RemoteMta - The remote server the delivery was attempted on.<br/>
+        </member>
+        <member name="T:HurricaneServer.Plugins.Outbound.OnFailureType">
+            <summary>
+            The type of failure that occured.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Outbound.OnFailureType.Temporary">
+            <summary>
+            The failure was temporary.  A future retry may allow the message to be delivered.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Outbound.OnFailureType.Permanent">
+            <summary>
+            The message has a permanent error and should not be retried untill the problem is resolved.
+            </summary>
+        </member>
+        <member name="T:HurricaneServer.Plugins.Outbound.OnFailureReasons">
+            <summary>
+            Possible reasons the message failed.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Outbound.OnFailureReasons.RecipientMailServerConnection">
+            <summary>
+            Error connecting to recipients mail server.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Outbound.OnFailureReasons.RecipientMailServerResponse">
+            <summary>
+            Error received in response from recipients mail server.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Outbound.OnFailureReasons.DnsError">
+            <summary>
+            There was an error with the DNS server.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Outbound.OnFailureReasons.SslAuthenticationError">
+            <summary>
+            Reserved for future use.
+            </summary>
+        </member>
+        <member name="T:HurricaneServer.Plugins.Outbound.ProtocolEventType">
+            <summary>
+            Enumeration that describes the type of event that occured.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Outbound.ProtocolEventType.Inbound">
+            <summary>
+            An message was recevied form the remote server.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Outbound.ProtocolEventType.Outbound">
+            <summary>
+            A message was sent to the remote server.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.Outbound.ProtocolEventType.Status">
+            <summary>
+            Status information only.
+            </summary>
+        </member>
+        <member name="T:HurricaneServer.Plugins.Outbound.IProtocolData">
+            <summary>
+            The interface that describes protocol data sent to the log.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Outbound.IProtocolData.Type">
+            <summary>
+            Gets a <see cref="T:HurricaneServer.Plugins.Outbound.ProtocolEventType"/> value that describes the event.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Outbound.IProtocolData.AccountId">
+            <summary>
+            The account the event occured under.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Outbound.IProtocolData.Domain">
+            <summary>
+            The domain that is being sent to at the time.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Outbound.IProtocolData.SystemMessageId">
+            <summary>
+            A system message ID if available.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Outbound.IProtocolData.CustomMessageId">
+            <summary>
+            The client created custom message id if available.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Outbound.IProtocolData.MailingId">
+            <summary>
+            The client created custom mailing id if available.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Outbound.IProtocolData.IpAddress">
+            <summary>
+            The IP address of the remote server.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.Outbound.IProtocolData.Data">
+            <summary>
+            The actual event data.
+            </summary>
+        </member>
+        <member name="T:HurricaneServer.Plugins.Outbound.IOutboundProtocol">
+            <summary>
+            The interface that is called durring an outbound send attempt with protocol logging data.
+            </summary>
+        </member>
+        <member name="M:HurricaneServer.Plugins.Outbound.IOutboundProtocol.OnEvent(HurricaneServer.Plugins.Outbound.IProtocolData,System.Collections.Generic.Dictionary{System.String,System.Object}@)">
+            <summary>
+            Called each time an event occurs.
+            </summary>
+            <param name="protocolData">A <see cref="T:HurricaneServer.Plugins.Outbound.IProtocolData"/> instance that conatains information relating to this event.</param>
+            <param name="options">Additional Options that may be read or set.</param>
+        </member>
+        <member name="T:HurricaneServer.Plugins.PluginBase">
+            <summary>
+            The base class that all plugins must inherit from.
+            </summary>
+            <remarks>This class contains settings, marshaling, and other features to make the plugin easier to use.</remarks>
+        </member>
+        <member name="M:HurricaneServer.Plugins.PluginBase.OnLoad(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Function called after the class is initialized and the settings are available.
+            </summary>
+        </member>
+        <member name="M:HurricaneServer.Plugins.PluginBase.OnUnload(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Function called at the time the class is being destroyed.
+            </summary>
+        </member>
+        <member name="M:HurricaneServer.Plugins.PluginBase.Finalize">
+            <summary>
+            Called when the class is destroyed.
+            </summary>
+        </member>
+        <member name="M:HurricaneServer.Plugins.PluginBase.Init(System.String)">
+            <summary>
+            Called internally when the plugin is initialized.
+            </summary>
+            <param name="fullPath"></param>
+        </member>
+        <member name="M:HurricaneServer.Plugins.PluginBase.InitializeLifetimeService">
+            <summary>
+            Obtains a lifetime service object to control the lifetime policy for this instance. 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:HurricaneServer.Plugins.PluginBase.Settings">
+            <summary>
+            Gets the settings object for this instance.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.PluginBase.FullPath">
+            <summary>
+            Gets the full path to the loaded plugin.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.PluginBase.Options">
+            <summary>
+            Additional Options that may be read or set.
+            </summary>
+        </member>
+        <member name="T:HurricaneServer.Plugins.PluginSettings">
+            <summary>
+            A class that exposes your plugin configuration data to your plugin.
+            </summary>
+        </member>
+        <member name="M:HurricaneServer.Plugins.PluginSettings.#ctor(Nini.Config.IConfigSource)">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:HurricaneServer.Plugins.PluginSettings.SetSection(System.String)">
+            <summary>
+            Sets the actice configuration section.
+            </summary>
+            <param name="section"></param>
+        </member>
+        <member name="M:HurricaneServer.Plugins.PluginSettings.SetValue(System.String,System.Object)">
+            <summary>
+            Sets a value in the config section.
+            </summary>
+            <param name="key">The name of the config key.</param>
+            <param name="value">The value of the key.</param>
+        </member>
+        <member name="M:HurricaneServer.Plugins.PluginSettings.Save">
+            <summary>
+            Save the config data to disk.
+            </summary>
+            <returns>Returns true on success or false on failure.</returns>
+        </member>
+        <member name="M:HurricaneServer.Plugins.PluginSettings.Get(System.String,System.String)">
+            <summary>
+            Gets a value from the config file and returns it as a string.
+            </summary>
+            <param name="key">The setting name.</param>
+            <param name="defaultValue">The default value to return if the setting is not found.</param>
+        </member>
+        <member name="M:HurricaneServer.Plugins.PluginSettings.GetInt(System.String,System.Int32)">
+            <summary>
+            Gets a value from the config file and returns it as an int.
+            </summary>
+            <param name="key">The setting name.</param>
+            <param name="defaultValue">The default value to return if the setting is not found.</param>
+        </member>
+        <member name="M:HurricaneServer.Plugins.PluginSettings.GetBoolean(System.String,System.Boolean)">
+            <summary>
+            Gets a value from the config file and returns it as a boolean.
+            </summary>
+            <param name="key">The setting name.</param>
+            <param name="defaultValue">The default value to return if the setting is not found.</param>
+        </member>
+        <member name="M:HurricaneServer.Plugins.PluginSettings.GetDouble(System.String,System.Double)">
+            <summary>
+            Gets a value from the config file and returns it as a double.
+            </summary>
+            <param name="key">The setting name.</param>
+            <param name="defaultValue">The default value to return if the setting is not found.</param>
+        </member>
+        <member name="T:HurricaneServer.Plugins.OpenClickTracking.OpenClickTrackingHitType">
+            <summary>
+            Enumeration that describes the type of that occured.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.OpenClickTracking.OpenClickTrackingHitType.Open">
+            <summary>
+            A message was open for viewing.
+            </summary>
+        </member>
+        <member name="F:HurricaneServer.Plugins.OpenClickTracking.OpenClickTrackingHitType.Click">
+            <summary>
+            A link was cliked
+            </summary>
+        </member>
+        <member name="T:HurricaneServer.Plugins.OpenClickTracking.IOpenClickTrackingHitData">
+            <summary>
+            The interface that describes the type of event that occured.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.OpenClickTracking.IOpenClickTrackingHitData.AccountId">
+            <summary>
+            Gets the account the message is being sent on.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.OpenClickTracking.IOpenClickTrackingHitData.SystemMessageId">
+            <summary>
+            Gets the system assigned message id.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.OpenClickTracking.IOpenClickTrackingHitData.CustomMessageId">
+            <summary>
+            Gets the client assigned message id.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.OpenClickTracking.IOpenClickTrackingHitData.MailingId">
+            <summary>
+            Gets the client assigned mailing id.
+            </summary>
+        </member>
+        <member name="P:HurricaneServer.Plugins.OpenClickTracking.IOpenClickTrackingHitData.URL">
+            <summary>
+            Gets the URL that the request is being redirected to.
+            </summary>
+            <remarks>Only available on click events.</remarks>
+        </member>
+        <member name="T:HurricaneServer.Plugins.OpenClickTracking.IOpenClickTracking">
+            <summary>
+            The interface used for message tracking events.
+            </summary>
+        </member>
+        <member name="M:HurricaneServer.Plugins.OpenClickTracking.IOpenClickTracking.OnOpenClickTrackingHit(HurricaneServer.Plugins.OpenClickTracking.OpenClickTrackingHitType,HurricaneServer.Plugins.OpenClickTracking.IOpenClickTrackingHitData,System.Collections.Generic.Dictionary{System.String,System.Object}@)">
+            <summary>
+            Called each time a message tracking event occurs.
+            </summary>
+            <param name="hitType">The type of event that occured.</param>
+            <param name="hitData">Data relating to the event.</param>
+            <param name="options">Additional options that may be read or set.<br/>
+            (string) DestinationUrl - The Url that was clicked if its an click event.<br/>
+            (string) LinkId - If a click event and the Link id is set it will containt the link id value.</param>
+        </member>
+    </members>
+</doc>
