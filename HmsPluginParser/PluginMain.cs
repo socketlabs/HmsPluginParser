@@ -95,11 +95,11 @@ namespace HmsPluginParser
             var accountId = Convert.ToInt32(options["AccountId"]);
             string sessionSourceIpAddress = _connectionList[sessionId];
 
-            //Ignore any email that is authenticated, this is normally meant for delivery.
+            //Only allow anonymous account 1000 inbound emails.  Any other account would mean the connection was authenticated.
             if (accountId != 1000)
                 return MessageResponseAction.Accept;
 
-            //Parse the SMTP recipients.  This only contains emails being sent to this domain accept by the SMTP RCPT TO command.  
+            //Parse the SMTP recipients.  This only contains recipients that where added using the SMTP RCPT TO command.  
             var allRecipients = Parsers.ParseRecipientList(envelope.Recipients);
 
             //If a recipient domain is not in our domains to parse list we ignore it.

@@ -6,6 +6,11 @@ namespace HmsPluginParser.Parsing
 {
     public class Parsers
     {
+        /// <summary>
+        /// Parses the RCPTO TO (SMTP) recipients passed in by the MTA.
+        /// </summary>
+        /// <param name="delimitedRecipients"></param>
+        /// <returns></returns>
         public static IEnumerable<RecipientAddress> ParseRecipientList(string delimitedRecipients)
         {
             List<string> recipientList = new List<string>();
@@ -20,6 +25,11 @@ namespace HmsPluginParser.Parsing
             }
         }
 
+        /// <summary>
+        /// Prases the message using the MimeKit package.
+        /// </summary>
+        /// <param name="messageStream"></param>
+        /// <returns></returns>
         public static MessageDetails ParseMessage(Stream messageStream)
         {
             // Load a MimeMessage from a stream using MimeKit
