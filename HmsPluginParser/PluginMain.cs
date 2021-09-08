@@ -8,7 +8,6 @@ using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using HmsPluginParser.Parsing;
-using HmsPluginParser.Sending;
 using HurricaneServer.Plugins;
 using HurricaneServer.Plugins.Inbound;
 using MimeKit;
@@ -22,7 +21,7 @@ namespace HmsPluginParser
     public class PluginMain : PluginBase, IInboundSMTPConnection
     {
         private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
-        private readonly ConcurrentDictionary<int, string> _connectionList = new ConcurrentDictionary<int, string>();
+        private readonly ConcurrentDictionary<int, SessionState> _connectionList = new ConcurrentDictionary<int, SessionState>();
         private string _pluginDirectory;
         private readonly Dictionary<string, int> _domainsToParse =
             new Dictionary<string, int>(StringComparer.InvariantCultureIgnoreCase);
@@ -56,20 +55,19 @@ namespace HmsPluginParser
 
         public InboundResponseAction OnRset(int sessionId, ref Dictionary<string, object> options, ref string response)
         {
-            throw new NotImplementedException();
+            return InboundResponseAction.Success;
         }
 
         public InboundResponseAction OnConnect(int sessionId, string ip, ref Dictionary<string, object> options,
             ref string response)
         {
-            _connectionList.TryAdd(sessionId, ip);
+            _connectionList.TryAdd(sessionId, new SessionState(ip));
             return InboundResponseAction.Success;
         }
 
         public void OnConnectionClosed(int sessionId, ref Dictionary<string, object> options)
         {
-            string ip;
-            _connectionList.TryRemove(sessionId, out ip);
+            _connectionList.TryRemove(sessionId, out var ip);
         }
 
         public InboundResponseAction OnData(int sessionId, ref Dictionary<string, object> options, ref string response)
@@ -86,6 +84,15 @@ namespace HmsPluginParser
         public InboundResponseAction OnMessageComplete(int sessionId, ref Dictionary<string, object> options,
             ref string response)
         {
+            if (_connectionList.TryGetValue(sessionId, out var session))
+            {
+                if (session.ReturnTemporaryFailure)
+                {
+                    response = "421 The service is unavailable, try again later. \r\n";
+                    return InboundResponseAction.Failure;
+                }
+            }
+            
             return InboundResponseAction.Success;
         }
 
@@ -93,7 +100,7 @@ namespace HmsPluginParser
             ref Dictionary<string, object> options)
         {
             var accountId = Convert.ToInt32(options["AccountId"]);
-            string sessionSourceIpAddress = _connectionList[sessionId];
+            var session = _connectionList[sessionId];
 
             //Only allow anonymous account 1000 inbound emails.  Any other account would mean the connection was authenticated.
             if (accountId != 1000)
@@ -122,7 +129,8 @@ namespace HmsPluginParser
             }
             catch(Exception e)
             {
-                _logger.Error(e, $"Error parsing message. {envelope.SystemMessageId} {sessionSourceIpAddress}.");
+                _logger.Error(e, $"Error parsing message. {envelope.SystemMessageId} {session.IpAddress}.");
+                session.ReturnTemporaryFailure = true;
             }
 
             //Discard the message no longer needed.
